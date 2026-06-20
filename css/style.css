@@ -128,11 +128,14 @@ h1, h2, h3, h4, h5 {
   position: relative;
   z-index: 1;
   max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .hero-badges {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-bottom: 1.75rem;
@@ -206,7 +209,7 @@ h1, h2, h3, h4, h5 {
   font-size: 1.05rem;
   color: #9ca3af;
   max-width: 640px;
-  margin-bottom: 2.25rem;
+  margin: 0 auto 2.25rem;
   line-height: 1.75;
 }
 
@@ -214,6 +217,7 @@ h1, h2, h3, h4, h5 {
 .authors-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
   margin-bottom: 2.25rem;
 }
@@ -266,6 +270,7 @@ h1, h2, h3, h4, h5 {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.6rem;
 }
 
