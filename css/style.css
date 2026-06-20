@@ -296,6 +296,20 @@ h1, h2, h3, h4, h5 {
   box-shadow: 0 4px 14px rgba(37,99,235,0.4);
 }
 
+.hero-btn:disabled,
+.hero-btn[aria-disabled="true"] {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.45);
+  border-color: rgba(255,255,255,0.12);
+  cursor: not-allowed;
+  font-family: inherit;
+}
+.hero-btn:disabled:hover,
+.hero-btn[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 .hero-btn-outline {
   background: rgba(255,255,255,0.06);
   color: #e5e7eb;
