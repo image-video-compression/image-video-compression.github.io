@@ -70,8 +70,25 @@ function deletePaper(paperId) {
   applyFilters();
 }
 
-function isDeletable(paper) {
+// How long a freshly-submitted paper's "Delete" button stays active.
+// After this window, the submitter is assumed to have reviewed it; the
+// button is disabled so other visitors can no longer remove someone
+// else's submission from the table.
+const SUBMISSION_DELETE_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+function isSubmissionEntry(paper) {
   return paper.source === "submission" || paper.type === "submission" || paper.submitted === true;
+}
+
+function isWithinDeleteWindow(paper) {
+  if (!paper.addedAt) return false;
+  const addedTime = new Date(paper.addedAt).getTime();
+  if (Number.isNaN(addedTime)) return false;
+  return Date.now() - addedTime < SUBMISSION_DELETE_WINDOW_MS;
+}
+
+function isDeletable(paper) {
+  return isSubmissionEntry(paper) && isWithinDeleteWindow(paper);
 }
 
 function mergePapers(basePapers, localSubmissions) {
@@ -263,9 +280,12 @@ function updateTable() {
   pageData.forEach((row) => {
     const tr = document.createElement("tr");
     const typeLabel = formatTypeLabel(row.type);
-    const deleteBtn = isDeletable(row)
-      ? `<button type="button" class="btn btn-sm btn-outline-danger delete-paper-btn" data-id="${escapeHtml(row.id)}" title="Remove this submission">Delete</button>`
-      : "";
+    let deleteBtn = "";
+    if (isSubmissionEntry(row)) {
+      deleteBtn = isWithinDeleteWindow(row)
+        ? `<button type="button" class="btn btn-sm btn-outline-danger delete-paper-btn" data-id="${escapeHtml(row.id)}" title="Remove this submission (available for 24h after adding)">Delete</button>`
+        : `<button type="button" class="btn btn-sm btn-outline-secondary delete-paper-btn" disabled title="The 24-hour window to delete this submission has expired">Delete</button>`;
+    }
 
     tr.innerHTML = `
       <td class="wrap">${searchTerm ? highlightSearchTerm(row.title, searchTerm) : escapeHtml(row.title)}</td>
@@ -279,6 +299,7 @@ function updateTable() {
   });
 
   tbody.querySelectorAll(".delete-paper-btn").forEach((btn) => {
+    if (btn.disabled) return; // expired delete window — no handler needed
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
       const paper = allData.find((p) => p.id === id);
