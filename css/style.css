@@ -479,7 +479,7 @@ h1, h2, h3, h4, h5 {
 }
 .chart-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
 
-.chart-card h5 {
+.chart-card h3 {
   font-size: 0.95rem;
   font-weight: 600;
   color: #374151;

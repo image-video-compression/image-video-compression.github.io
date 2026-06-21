@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /submissions.json
+Disallow: /venues.json
+Disallow: /papers.json
 
 Sitemap: https://image-video-compression.github.io/sitemap.xml
